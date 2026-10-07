@@ -2,10 +2,92 @@
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
-    <title>Mercado Livre OAuth</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Radar Mercado Livre</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 60px auto;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .box {
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            padding: 30px;
+        }
+
+        code {
+            display: block;
+            background: #f3f3f3;
+            padding: 15px;
+            margin-top: 20px;
+            word-break: break-all;
+        }
+    </style>
 </head>
+
 <body>
-    <h1>Autorização do Mercado Livre</h1>
-    <p>Esta página é utilizada pelo Radar Mercado Livre.</p>
+
+<div class="box">
+
+    <h1>Radar Mercado Livre</h1>
+
+    <p id="mensagem">
+        Página de autorização do Radar Mercado Livre.
+    </p>
+
+    <div id="codigo"></div>
+
+</div>
+
+<script>
+
+const parametros = new URLSearchParams(
+    window.location.search
+);
+
+const code = parametros.get("code");
+const state = parametros.get("state");
+const error = parametros.get("error");
+
+const mensagem = document.getElementById("mensagem");
+const codigo = document.getElementById("codigo");
+
+if (error) {
+
+    mensagem.textContent =
+        "O Mercado Livre retornou um erro:";
+
+    codigo.innerHTML =
+        "<code>" +
+        error +
+        "</code>";
+
+}
+else if (code) {
+
+    mensagem.textContent =
+        "Código de autorização recebido.";
+
+    codigo.innerHTML =
+        "<p>Copie o código abaixo:</p>" +
+        "<code>" +
+        code +
+        "</code>";
+
+}
+else {
+
+    mensagem.textContent =
+        "A página está funcionando corretamente.";
+
+}
+
+</script>
+
 </body>
 </html>
