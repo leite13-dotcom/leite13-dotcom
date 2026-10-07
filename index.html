@@ -1,33 +1,60 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title>Radar Mercado Livre</title>
 
     <style>
+
         body {
             font-family: Arial, sans-serif;
-            max-width: 800px;
-            margin: 60px auto;
-            padding: 20px;
-            text-align: center;
+            background: #f5f5f5;
+            padding: 40px;
         }
 
         .box {
-            border: 1px solid #ddd;
-            border-radius: 10px;
+            max-width: 800px;
+            margin: auto;
+            background: white;
             padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        h1 {
+            color: #222;
+        }
+
+        .campo {
+            margin-top: 25px;
+        }
+
+        .label {
+            font-weight: bold;
+            margin-bottom: 8px;
         }
 
         code {
             display: block;
-            background: #f3f3f3;
+            background: #eeeeee;
             padding: 15px;
-            margin-top: 20px;
+            border-radius: 6px;
             word-break: break-all;
+            font-size: 15px;
         }
+
+        .aviso {
+            margin-top: 25px;
+            padding: 15px;
+            background: #fff8d6;
+            border-radius: 6px;
+        }
+
     </style>
+
 </head>
 
 <body>
@@ -37,10 +64,10 @@
     <h1>Radar Mercado Livre</h1>
 
     <p id="mensagem">
-        Página de autorização do Radar Mercado Livre.
+        Página de autorização.
     </p>
 
-    <div id="codigo"></div>
+    <div id="resultado"></div>
 
 </div>
 
@@ -51,35 +78,70 @@ const parametros = new URLSearchParams(
 );
 
 const code = parametros.get("code");
+
 const state = parametros.get("state");
+
 const error = parametros.get("error");
 
-const mensagem = document.getElementById("mensagem");
-const codigo = document.getElementById("codigo");
+const mensagem =
+    document.getElementById("mensagem");
+
+const resultado =
+    document.getElementById("resultado");
+
 
 if (error) {
 
     mensagem.textContent =
-        "O Mercado Livre retornou um erro:";
+        "O Mercado Livre retornou um erro.";
 
-    codigo.innerHTML =
-        "<code>" +
-        error +
-        "</code>";
+    resultado.innerHTML =
+        `
+        <div class="campo">
+            <div class="label">Erro</div>
+            <code>${escapeHtml(error)}</code>
+        </div>
+        `;
 
 }
+
 else if (code) {
 
     mensagem.textContent =
-        "Código de autorização recebido.";
+        "Autorização recebida com sucesso.";
 
-    codigo.innerHTML =
-        "<p>Copie o código abaixo:</p>" +
-        "<code>" +
-        code +
-        "</code>";
+    resultado.innerHTML =
+        `
+        <div class="campo">
+
+            <div class="label">
+                Código de autorização
+            </div>
+
+            <code>${escapeHtml(code)}</code>
+
+        </div>
+
+        <div class="campo">
+
+            <div class="label">
+                State
+            </div>
+
+            <code>${escapeHtml(state || "")}</code>
+
+        </div>
+
+        <div class="aviso">
+
+            Copie o código e o State para o
+            programa Python.
+
+        </div>
+        `;
 
 }
+
 else {
 
     mensagem.textContent =
@@ -87,7 +149,20 @@ else {
 
 }
 
+
+function escapeHtml(text) {
+
+    return text
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+
+}
+
 </script>
 
 </body>
+
 </html>
